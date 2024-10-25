@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { validateData } from '../../middlewares/validationMiddleware';
 import {
   createProduct,
   deleteProduct,
@@ -7,14 +8,19 @@ import {
   updateProduct,
 } from './productsController';
 
+import {
+  createProductSchema,
+  updateProductSchema,
+} from '../../db/productsSchema';
+
 // products endpoints
 const router = Router();
 
 router
   .get('/', listProduct)
   .get('/:id', getProductById)
-  .post('/', createProduct)
-  .put('/:id', updateProduct)
+  .post('/', validateData(createProductSchema), createProduct)
+  .put('/:id', validateData(updateProductSchema), updateProduct)
   .delete('/:id', deleteProduct);
 
 export default router;
