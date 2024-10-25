@@ -21,7 +21,7 @@ export async function getProductById(req: Request, res: Response) {
       .where(eq(productsTable.id, Number(id)));
 
     if (!product) {
-      res.status(404).json({ message: 'Product not found!' });
+      res.status(404).json({ error: 'Product not found!' });
     } else {
       res.json(product);
     }
@@ -43,7 +43,7 @@ export async function updateProduct(req: Request, res: Response) {
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: 'Product was not found!' });
+      res.status(404).json({ error: 'Product not found!' });
     }
   } catch (e) {
     res.status(500).send(e);

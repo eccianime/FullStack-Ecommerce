@@ -11,7 +11,7 @@ app.use(urlencoded({ extended: false }));
 app.use(json());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.json({ message: 'Hello World!' });
 });
 
 app.use('/products', productsRouter);
