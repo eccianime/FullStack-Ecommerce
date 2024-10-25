@@ -12,6 +12,7 @@ import {
   createProductSchema,
   updateProductSchema,
 } from '../../db/productsSchema';
+import { verifySeller, verifyToken } from '../../middlewares/authMiddleware';
 
 // products endpoints
 const router = Router();
@@ -19,8 +20,20 @@ const router = Router();
 router
   .get('/', listProduct)
   .get('/:id', getProductById)
-  .post('/', validateData(createProductSchema), createProduct)
-  .put('/:id', validateData(updateProductSchema), updateProduct)
-  .delete('/:id', deleteProduct);
+  .post(
+    '/',
+    verifyToken,
+    verifySeller,
+    validateData(createProductSchema),
+    createProduct
+  )
+  .put(
+    '/:id',
+    verifyToken,
+    verifySeller,
+    validateData(updateProductSchema),
+    updateProduct
+  )
+  .delete('/:id', verifyToken, verifySeller, deleteProduct);
 
 export default router;
