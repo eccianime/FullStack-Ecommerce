@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm';
 export async function createOrder(req: Request, res: Response) {
   try {
     const { order, items } = req.cleanBody;
-    const userId = req.userId;
+    const userId = Number(req.userId);
     if (!userId) {
       res.status(400).json({ error: 'Invalid order data' });
       return;
@@ -23,10 +23,7 @@ export async function createOrder(req: Request, res: Response) {
       orderId: newOrder.id,
     }));
 
-    const [newOrderItems] = await db
-      .insert(orderItemsTable)
-      .values(orderItems)
-      .returning();
+    await db.insert(orderItemsTable).values(orderItems).returning();
 
     res.status(201).json({ ...newOrder, items: orderItems });
   } catch (e) {
